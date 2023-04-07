@@ -1,0 +1,11 @@
+# development
+/node_modules
+
+# logs
+*.log
+/dist
+.eslintcache
+.DS_Store
+
+# .idea
+.vscode

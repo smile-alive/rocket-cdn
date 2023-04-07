@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "properties": {
+    "secretId": {
+      "type": "string"
+    },
+    "secretKey": {
+      "type": "string"
+    },
+    "bucket": {
+      "type": "string"
+    },
+    "region": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "cacheFile": {
+      "type": "string"
+    }
+  },
+  "required": ["secretId", "secretKey", "bucket", "region"],
+  "additionalProperties": false
+}

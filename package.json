@@ -1,0 +1,57 @@
+{
+  "name": "cdn-loader",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "repository": "https://github.com/smile-alive/cdn-loader.git",
+  "author": "郗祥如 <1727644833@qq.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "babel src -d dist --copy-files",
+    "prepare": "npm run build",
+    "clean": "del-cli dist",
+    "prebuild": "npm run clean",
+    "lint:prettier": "prettier --list-different ./src",
+    "lint:js": "eslint --cache ./src",
+    "lint": "npm-run-all -l -p 'lint:**'",
+    "husky": "husky install",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,md,yml,css,ts}": [
+      "prettier --write"
+    ]
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "colors": "^1.4.0",
+    "cos-nodejs-sdk-v5": "^2.11.19",
+    "loader-utils": "^3.2.1",
+    "md5-file": "^5.0.0",
+    "mkdirp": "^2.1.6",
+    "schema-utils": "^4.0.0",
+    "webpack-log": "^3.0.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@commitlint/cli": "^17.5.1",
+    "@commitlint/config-conventional": "^17.4.4",
+    "@types/node": "^18.15.11",
+    "@webpack-contrib/eslint-config-webpack": "^3.0.0",
+    "del-cli": "^5.0.0",
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.8.7"
+  }
+}
