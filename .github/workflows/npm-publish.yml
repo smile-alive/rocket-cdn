@@ -1,0 +1,40 @@
+name: Npm Publish Package
+
+# 监听到tag的变更时，执行脚本
+on:
+  push:
+    tags:
+      - "v*"
+
+# 任务流
+jobs:
+  build-and-publish:
+    name: Npm Publish Package
+    # 指定最新版的 ubuntu 为该作业的操作系统
+    runs-on: ubuntu-latest
+    steps:
+      # 第一步：获取分支的代码
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # 第二步：设置 Node.js 环境并指定所需的版本
+      - name: Setup Node.js v14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+
+      # 第三步：安装项目依赖项
+      - name: Install
+        run: npm install
+
+      # 第四步：构建项目输出文件
+      - name: Build
+        run: npm run build
+
+      # 第五步：将打包后的文件发布到 NPM
+      - name: Publish to NPM
+        run: |
+          npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+          npm publish
+        env:
+          NPM_TOKEN: ${{ secrets.ROCKET_CDN_NPM_TOKEN }}
