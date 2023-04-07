@@ -6,7 +6,7 @@ const logger = require("webpack-log");
 const schema = require("./schema.json");
 const Akali = require("./akali");
 
-const LOADER_NAME = "CDN-LOADER";
+const LOADER_NAME = "ROCKET-CDN";
 const log = logger({
   name: LOADER_NAME,
   level: "info",

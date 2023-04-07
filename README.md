@@ -1,6 +1,6 @@
-# cdn-loader
+# rocket-cdn
 
-> cdn-loader 用于处理图片资源，将图片上传 cos，返回 cdn 地址替换本地引用
+> rocket-cdn 用于处理图片资源，将图片上传 cos，返回 cdn 地址替换本地引用
 > 目前只支持 cos,后续会拓展 oss 和七牛云等对象存储
 
 ### options 参数
@@ -23,8 +23,8 @@ webpackChain(chain) {
     chain.module
         .rule('image')
         .test(/\.(png|jpe?g|gif)$/i)
-        .use('cdn-loader')
-        .loader('cdn-loader')
+        .use('rocket-cdn')
+        .loader('rocket-cdn')
         .options({
             secretId: '',
             secretKey: '',
@@ -46,7 +46,7 @@ module.exports = {
         test: /\.(png|jpe?g|gif)$/i,
         use: [
           {
-            loader: "cdn-loader",
+            loader: "rocket-cdn",
             options: {
               secretId: "",
               secretKey: "",
