@@ -6,6 +6,7 @@
   "author": "郗祥如 <1727644833@qq.com>",
   "license": "MIT",
   "scripts": {
+    "beta": "npm version prerelease --preid=beta && npm publish --tag beta",
     "build": "babel src -d dist --copy-files",
     "prepare": "npm run build",
     "clean": "del-cli dist",
