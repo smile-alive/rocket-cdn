@@ -1,7 +1,21 @@
 # rocket-cdn
 
 > rocket-cdn 用于处理图片资源，将图片上传 cos，返回 cdn 地址替换本地引用
-> 目前只支持 cos,后续会拓展 oss 和七牛云等对象存储
+
+> 目前只支持 cos，后续会拓展 oss 和七牛云等对象存储
+
+>> taro webpack5打包后css的背景图别名引用路径替换异常，相对引用正常使用
+
+>> CRA项目正常使用
+
+```js
+// 打包前
+import src from '@/static/image/放大镜.png';
+<Image mode='aspectFit' src={src} />
+
+// 打包后
+<Image mode='aspectFit' src=‘https://sylas-image.vhhg.site/825c5a02f69c8022d24e8f3b07e95323.png’ />
+```
 
 ### options 参数
 
