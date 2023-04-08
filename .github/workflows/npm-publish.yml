@@ -15,13 +15,13 @@ jobs:
     steps:
       # 第一步：获取分支的代码
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # 第二步：设置 Node.js 环境并指定所需的版本
-      - name: Setup Node.js v14.x
-        uses: actions/setup-node@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: "14.x"
+          node-version: "16.x"
 
       # 第三步：安装项目依赖项
       - name: Install
