@@ -1,3 +1,5 @@
+const path = require("path");
+
 const { validate } = require("schema-utils");
 const { getHashDigest } = require("loader-utils");
 const colors = require("colors");
@@ -56,6 +58,7 @@ function createAkali(opts) {
  * @param region 		存储桶所在地域
  * @param domain 		请求域名
  * @param cacheFile 	缓存文件路径（防止重复上传）
+ * @param relativePath 	是否使用md5作为文件名称
  */
 module.exports = function loader(source) {
   // 获取params参数
@@ -70,11 +73,15 @@ module.exports = function loader(source) {
 
   // 获取资源文件的路径
   const filePath = this.resourcePath;
+  const srcPath = this.rootContext;
+  // 获取文件的相对路径
+  const relativePath = path.relative(srcPath, filePath);
+
   const fileMd5 = getHashDigest(source, "md5", "hex", 8);
 
   // 将上传方法缓存到uploadQueue中
   if (!uploadQueue.has(fileMd5)) {
-    uploadQueue.set(fileMd5, akali.upload(filePath));
+    uploadQueue.set(fileMd5, akali.upload(filePath, relativePath));
   }
 
   // 直接使用缓存的promise

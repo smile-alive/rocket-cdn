@@ -30,7 +30,7 @@ function set(key, cacheFilePath) {
       mkdirp.sync(path.dirname(cacheFilePath));
     }
     map = { ...map, ...key };
-    fs.writeFileSync(cacheFilePath, JSON.stringify(map));
+    fs.writeFileSync(cacheFilePath, JSON.stringify(map, null, 2));
   } catch (e) {
     /* empty */
   }

@@ -1,6 +1,6 @@
 {
   "name": "rocket-cdn",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "./dist/index.js",
   "repository": "https://github.com/smile-alive/rocket-cdn.git",
   "author": "郗祥如 <1727644833@qq.com>",
@@ -11,8 +11,8 @@
     "prepare": "npm run build",
     "clean": "del-cli dist",
     "prebuild": "npm run clean",
-    "lint:prettier": "prettier --list-different ./src",
-    "lint:js": "eslint --cache ./src",
+    "lint:pr": "prettier --write ./src",
+    "lint:js": "eslint --fix ./src",
     "lint": "npm-run-all -l -p 'lint:**'",
     "husky": "husky install",
     "lint-staged": "lint-staged"
@@ -46,6 +46,7 @@
   "devDependencies": {
     "@babel/cli": "^7.21.0",
     "@babel/core": "^7.21.4",
+    "@babel/eslint-parser": "^7.21.3",
     "@babel/preset-env": "^7.21.4",
     "@commitlint/cli": "^17.5.1",
     "@commitlint/config-conventional": "^17.4.4",

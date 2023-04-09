@@ -4,9 +4,9 @@
 
 > 目前只支持 cos，后续会拓展 oss 和七牛云等对象存储
 
->> taro webpack5打包后css的背景图别名引用路径替换异常，相对引用正常使用
+> > taro webpack5 打包后 css 的背景图别名引用路径替换异常，相对引用正常使用
 
->> CRA项目正常使用
+> > CRA 项目正常使用
 
 ```js
 // 打包前
@@ -19,14 +19,15 @@ import src from '@/static/image/放大镜.png';
 
 ### options 参数
 
-|   参数    |  类型  | 必传项 |      必传项      |
-| :-------: | :----: | :----: | :--------------: |
-| secretId  | string |   是   | cos 的 SecretId  |
-| secretKey | string |   是   | cos 的 secretKey |
-|  bucket   | string |   是   |   存储桶的名称   |
-|  region   | string |   是   |  存储桶所在地域  |
-|  domain   | string |   否   |    自定义域名    |
-| cacheFile | string |   否   |  缓存文件的路径  |
+|     参数     |  类型   | 必传项 |                  必传项                  |
+| :----------: | :-----: | :----: | :--------------------------------------: |
+|   secretId   | string  |   是   |             cos 的 SecretId              |
+|  secretKey   | string  |   是   |             cos 的 secretKey             |
+|    bucket    | string  |   是   |               存储桶的名称               |
+|    region    | string  |   是   |              存储桶所在地域              |
+|    domain    | string  |   否   |                自定义域名                |
+|  cacheFile   | string  |   否   |              缓存文件的路径              |
+| relativePath | boolean |   否   | 是否使用文件 md5 作为图片名称，默认 true |
 
 ### webpack-chain 中使用
 
@@ -44,7 +45,8 @@ webpackChain(chain) {
             secretKey: '',
             bucket: '',
             region: '',
-            domain: ''
+            domain: '',
+            relativePath: false
         })
         .end();
 }
@@ -67,6 +69,7 @@ module.exports = {
               bucket: "",
               region: "",
               domain: "",
+              relativePath: false,
             },
           },
         ],

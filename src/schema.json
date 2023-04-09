@@ -18,6 +18,9 @@
     },
     "cacheFile": {
       "type": "string"
+    },
+    "relativePath": {
+      "type": "boolean"
     }
   },
   "required": ["secretId", "secretKey", "bucket", "region"],

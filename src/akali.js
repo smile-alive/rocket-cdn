@@ -1,5 +1,4 @@
 const path = require("path");
-
 const fs = require("fs");
 
 const md5File = require("md5-file");
@@ -36,6 +35,7 @@ class Akali {
       set(this.memoryCache, this.cacheFile);
     }, 2000);
   }
+
   // 上传资产
   async cosPut(filekey, filePath) {
     try {
@@ -57,14 +57,15 @@ class Akali {
       };
     } catch (error) {
       return {
-        code: error && error.status ? error.status : -2,
+        code: error?.status || -2,
         success: false,
-        message: error && error.message ? error.message : errorMessage[-2],
+        message: error?.message || errorMessage[-2],
         data: error,
       };
     }
   }
-  async upload(filePath) {
+
+  async upload(filePath, relativePath) {
     // 文件类型缩紧
     const ext = path.extname(filePath).toLowerCase().slice(1);
     if (!typeMap.includes(ext)) {
@@ -92,8 +93,11 @@ class Akali {
       });
     }
 
-    const result = await this.cosPut(key, filePath);
-    if (result && result.success) {
+    const result = await this.cosPut(
+      this.options?.relativePath ? relativePath : key,
+      filePath
+    );
+    if (result?.success) {
       this.memoryCache[key] = result.data;
       this.saveCacheToFile();
       return Promise.resolve({
