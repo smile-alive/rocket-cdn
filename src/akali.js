@@ -1,116 +1,85 @@
 const path = require("path");
-const fs = require("fs");
 
 const md5File = require("md5-file");
-const COS = require("cos-nodejs-sdk-v5");
 
 const { getAll, set } = require("./util/cache");
+const filtr = require("./util/filtr");
+const TCCOS = require("./service/cos");
+const ALIOSS = require("./service/oss");
 
-const cacheFile = ".cache/sdk-file-uploader.json";
-const typeMap = ["jpg", "jpeg", "png", "gif", "webp", "svg"];
-const errorMessage = {
-  "-2": "上传失败",
-  "-1": "暂不支持此文件格式",
-  0: "文件已在缓存列表",
-  1: "上传成功",
+const CACHE_ADDRESS = ".cache/sdk-file-uploader.json";
+const FILE_TYPE = ["jpg", "jpeg", "png", "gif", "webp", "svg"];
+
+const ClassMap = {
+  tc: TCCOS,
+  ali: ALIOSS,
 };
 
 class Akali {
   constructor(options = {}) {
-    this.options = options;
-    // 创建实例
-    this.cos = new COS({
-      SecretId: options.secretId,
-      SecretKey: options.secretKey,
-    });
-
+    this.options = { origPath: false, headers: {}, ...options };
+    // NOTE: 根据 ossType 选项实例化相应的类
+    // eslint-disable-next-line new-cap
+    this.oss = new ClassMap[options.ossType].default({ ...options });
     // 设置缓存地址
-    this.cacheFile =
-      options.cacheFile || path.resolve(process.cwd(), cacheFile);
-    this.memoryCache = getAll(this.cacheFile);
+    this.cacheAddress = path.resolve(process.cwd(), CACHE_ADDRESS);
+    this.cacheContent = getAll(this.cacheAddress);
   }
+
   saveCacheToFile() {
     clearTimeout(this.cacheTimer);
     this.cacheTimer = setTimeout(() => {
-      set(this.memoryCache, this.cacheFile);
+      set(this.cacheContent, this.cacheAddress);
     }, 2000);
   }
 
-  // 上传资产
-  async cosPut(filekey, filePath) {
-    try {
-      const uploadResult = await this.cos.putObject({
-        Bucket: this.options.bucket,
-        Region: this.options.region,
-        Key: filekey,
-        Body: fs.createReadStream(filePath),
-        ContentLength: fs.statSync(filePath).size,
-        ACL: "public-read",
-      });
-      return {
-        code: 1,
-        success: true,
-        message: errorMessage[1],
-        data: this.options.domain
-          ? `${this.options.domain}/${filekey}`
-          : uploadResult.Location,
-      };
-    } catch (error) {
-      return {
-        code: error?.status || -2,
-        success: false,
-        message: error?.message || errorMessage[-2],
-        data: error,
-      };
-    }
-  }
-
-  async upload(filePath, relativePath) {
+  async upload(filePath, origPath) {
     // 文件类型缩紧
     const ext = path.extname(filePath).toLowerCase().slice(1);
-    if (!typeMap.includes(ext)) {
-      return Promise.reject(
-        new Error({
-          code: -1,
-          success: false,
-          message: errorMessage[-1],
-        })
-      );
+    if (!FILE_TYPE.includes(ext)) {
+      return Promise.reject({
+        code: 400,
+        success: false,
+        message: "暂不支持此文件格式",
+      });
     }
 
+    // file rename
     const md5 = md5File.sync(filePath);
     const key = `${md5}.${ext}`;
     // 缓存存在直接返回
-    if (this.memoryCache[key]) {
+    if (this.cacheContent[key]) {
       return Promise.resolve({
-        code: 0,
+        code: 300,
         success: true,
-        message: errorMessage[0],
+        message: "文件已在缓存列表",
         data: {
-          md5,
-          url: this.memoryCache[key],
+          url: this.cacheContent[key],
         },
       });
     }
 
-    const result = await this.cosPut(
-      this.options?.relativePath ? relativePath : key,
-      filePath
+    // 过滤掉所有的函数类型属性
+    const opts = filtr(this.options.headers);
+    // 判断使用md5转码后的文件名
+    const result = await this.oss.put(
+      this.options.origPath ? origPath : key,
+      filePath,
+      opts
     );
-    if (result?.success) {
-      this.memoryCache[key] = result.data;
+    if (result.success) {
+      this.cacheContent[key] = result.url;
       this.saveCacheToFile();
       return Promise.resolve({
-        code: 1,
+        code: 200,
         success: true,
-        message: errorMessage[1],
+        message: "上传成功",
         data: {
-          md5,
-          url: result.data,
+          url: result.url,
         },
       });
     }
-    return Promise.reject(new Error({ ...result }));
+    return Promise.reject({ ...result });
   }
 }
 

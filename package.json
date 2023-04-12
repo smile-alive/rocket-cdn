@@ -35,6 +35,7 @@
     "dist"
   ],
   "dependencies": {
+    "ali-oss": "^6.17.1",
     "colors": "^1.4.0",
     "cos-nodejs-sdk-v5": "^2.11.19",
     "loader-utils": "^3.2.1",

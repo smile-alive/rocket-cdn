@@ -13,16 +13,29 @@
     "region": {
       "type": "string"
     },
+    "ossType": {
+      "type": "string",
+      "enum": [
+        "tc",
+        "ali"
+      ]
+    },
     "domain": {
       "type": "string"
     },
-    "cacheFile": {
-      "type": "string"
-    },
-    "relativePath": {
+    "origPath": {
       "type": "boolean"
+    },
+    "headers": {
+      "type": "object"
     }
   },
-  "required": ["secretId", "secretKey", "bucket", "region"],
+  "required": [
+    "secretId",
+    "secretKey",
+    "bucket",
+    "region",
+    "ossType"
+  ],
   "additionalProperties": false
 }
