@@ -42,7 +42,8 @@ function createAkali(opts) {
  * @param {string} region - 存储桶所在地域
  * @param {string} ossType - 存储对象平台
  * @param {string} domain - 自定义域名
- * @param {string} origPath - 是否使用原始路径
+ * @param {boolean} origPath - 是否使用原始路径
+ * @param {boolean} overwrite - 是否使用缓存
  * @param {object} headers - 请求头信息
  */
 module.exports = function RocketCdn(source) {
@@ -77,7 +78,7 @@ module.exports = function RocketCdn(source) {
     })
     .catch((error) => {
       throw new Error(
-        JSON.stringify({ message: error.message, filename: filePath }, null, 2)
+        JSON.stringify({ ...error, filename: filePath }, null, 2)
       );
     });
 };

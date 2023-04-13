@@ -1,6 +1,6 @@
 {
   "name": "rocket-cdn",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "main": "./dist/index.js",
   "repository": "https://github.com/smile-alive/rocket-cdn.git",
   "author": "郗祥如 <1727644833@qq.com>",
