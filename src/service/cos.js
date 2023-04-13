@@ -39,18 +39,19 @@ class TCCOS {
         Key: name,
       });
       return Promise.resolve({
-        code: 200,
         success: true,
+        code: 200,
         message: "上传成功",
-        url: this.options.domain
-          ? `${this.options.domain}/${name}`
-          : res.Location,
+        data: {
+          url: this.config.domain
+            ? `${this.config.domain}/${name}`
+            : res.Location,
+        },
       });
     } catch (error) {
-      console.log("🚀 ~ file: cos.js:45 ~ TCCOS ~ put ~ error:", error);
       return Promise.reject({
-        code: error?.statusCode,
         success: false,
+        code: error?.statusCode,
         message: error?.message,
       });
     }

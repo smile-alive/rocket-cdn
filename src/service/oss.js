@@ -38,12 +38,16 @@ class ALIOSS {
         code: 200,
         success: true,
         message: "上传成功",
-        url: this.config.domain ? `${this.config.domain}/${res.name}` : res.url,
+        data: {
+          url: this.config.domain
+            ? `${this.config.domain}/${res.name}`
+            : res.url,
+        },
       });
     } catch (error) {
       return Promise.reject({
-        code: error?.code,
         success: false,
+        coe: error?.status,
         message: error?.message,
       });
     }

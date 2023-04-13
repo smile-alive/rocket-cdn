@@ -26,6 +26,9 @@
     "origPath": {
       "type": "boolean"
     },
+    "overwrite": {
+      "type": "boolean"
+    },
     "headers": {
       "type": "object"
     }

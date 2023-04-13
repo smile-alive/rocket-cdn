@@ -4,7 +4,7 @@ const path = require("path");
 const mkdirp = require("mkdirp");
 
 /**
- * 获取所有缓存数据
+ * @description: 获取所有缓存数据
  * @param {string} cacheFilePath - 缓存文件路径
  * @returns {object} - 返回缓存数据对象
  */
@@ -13,7 +13,7 @@ function getAll(cacheFilePath) {
 }
 
 /**
- * 获取指定键名的缓存数据
+ * @description: 获取指定键名的缓存数据
  * @param {string} key - 缓存数据的键名
  * @param {string} cacheFilePath - 缓存文件路径
  * @returns {any} - 返回对应的缓存数据值，如果未指定键名则返回整个缓存数据对象
@@ -32,7 +32,7 @@ function get(key, cacheFilePath) {
 }
 
 /**
- * 设置缓存数据
+ * @description: 设置缓存数据
  * @param {object} data - 需要设置的缓存数据对象
  * @param {string} cacheFilePath - 缓存文件路径
  */
