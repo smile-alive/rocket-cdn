@@ -15,16 +15,20 @@
     },
     "ossType": {
       "type": "string",
-      "enum": [
-        "tc",
-        "ali"
-      ]
+      "enum": ["tc", "ali", "qiniu"]
     },
     "domain": {
       "type": "string"
     },
-    "origPath": {
-      "type": "boolean"
+    "customPath": {
+      "oneOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "string"
+        }
+      ]
     },
     "overwrite": {
       "type": "boolean"
@@ -33,12 +37,26 @@
       "type": "object"
     }
   },
-  "required": [
-    "secretId",
-    "secretKey",
-    "bucket",
-    "region",
-    "ossType"
+  "required": ["secretId", "secretKey", "bucket", "region", "ossType"],
+  "anyOf": [
+    {
+      "properties": {
+        "ossType": {
+          "enum": ["ali", "tc"]
+        }
+      }
+    },
+    {
+      "properties": {
+        "ossType": {
+          "const": "qiniu"
+        },
+        "domain": {
+          "type": "string"
+        }
+      },
+      "required": ["domain"]
+    }
   ],
   "additionalProperties": false
 }

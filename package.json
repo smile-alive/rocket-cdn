@@ -1,6 +1,6 @@
 {
   "name": "rocket-cdn",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "main": "./dist/index.js",
   "repository": "https://github.com/smile-alive/rocket-cdn.git",
   "author": "郗祥如 <1727644833@qq.com>",
@@ -41,6 +41,7 @@
     "loader-utils": "^3.2.1",
     "md5-file": "^5.0.0",
     "mkdirp": "^2.1.6",
+    "qiniu": "^7.8.0",
     "schema-utils": "^4.0.0",
     "webpack-log": "^3.0.2"
   },

@@ -29,7 +29,7 @@ let akali;
 // 实例化Akali对象
 function createAkali(opts) {
   if (!akali) {
-    akali = new Akali({ ...opts });
+    akali = new Akali({ ...opts, domain: opts.domain?.replace(/\/$/, "") });
   }
   return akali;
 }
@@ -42,9 +42,9 @@ function createAkali(opts) {
  * @param {string} region - 存储桶所在地域
  * @param {string} ossType - 存储对象平台
  * @param {string} domain - 自定义域名
- * @param {boolean} origPath - 是否使用原始路径
+ * @param {boolean | string} customPath - 是否使用自定义路径
  * @param {boolean} overwrite - 是否使用缓存
- * @param {object} headers - 请求头信息
+ * @param {object} headers - oss上传函数拓展参数
  */
 module.exports = function RocketCdn(source) {
   // 获取params参数
@@ -59,13 +59,19 @@ module.exports = function RocketCdn(source) {
   // 获取资源文件的路径
   const filePath = this.resourcePath;
   const srcPath = this.rootContext;
-  // 获取文件的相对路径
-  const origPath = path.relative(srcPath, filePath);
+  const fileName = path.basename(filePath);
+
+  // 校验自定义路径，默认为文件的相对位置
+  let customPath = path.relative(srcPath, filePath);
+  if (typeof options.customPath === "string" && options.customPath.length) {
+    customPath = `${options.customPath.replace(/^\/|\/$/g, "")}/${fileName}`;
+  }
+
   const fileMd5 = getHashDigest(source, "md5");
 
   // 将上传方法缓存到uploadQueue中
   if (!uploadCache.has(fileMd5)) {
-    uploadCache.set(fileMd5, akali.upload(filePath, origPath));
+    uploadCache.set(fileMd5, akali.upload(filePath, customPath));
   }
 
   // 直接使用缓存的promise

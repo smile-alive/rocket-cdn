@@ -45,7 +45,7 @@ class TCCOS {
         data: {
           url: this.config.domain
             ? `${this.config.domain}/${name}`
-            : res.Location,
+            : `https://${res.Location}`,
         },
       });
     } catch (error) {

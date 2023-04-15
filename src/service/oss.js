@@ -47,7 +47,7 @@ class ALIOSS {
     } catch (error) {
       return Promise.reject({
         success: false,
-        coe: error?.status,
+        code: error?.status,
         message: error?.message,
       });
     }
